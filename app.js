@@ -19,5 +19,9 @@ app.use(bodyParser.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/finance", financeRoutes);
 
+app.get("/", (req, res) => {
+  res.status(200).json({messge:"API is running..."});
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server started on port ${PORT}`));
