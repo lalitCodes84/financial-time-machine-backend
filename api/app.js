@@ -8,6 +8,7 @@ const financeRoutes = require("../routes/financeRoutes");
 const authRoutes = require("../routes/authRoutes");
 
 dotenv.config();
+
 connectDB();
 
 const app = express();
