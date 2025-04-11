@@ -215,7 +215,7 @@ GET /api/finance/projection/:id
 ## ✨ Contribution
 
 - Backend: [Lalit Sharma]
-- Frontend: [Zubair Alam]
+- Frontend: [Zuba Alam]
 
 ---
 
