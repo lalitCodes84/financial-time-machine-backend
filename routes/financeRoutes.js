@@ -1,5 +1,8 @@
 const express = require("express");
-const { createFinance, getProjection } = require("../controllers/financeController");
+const {
+  createFinance,
+  getProjection,
+} = require("../controllers/financeController");
 const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();

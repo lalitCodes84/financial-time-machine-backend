@@ -1,226 +1,148 @@
-# 💸 Financial Time Machine (Backend)
+# 📊 Financial Projection Backend
 
-This backend powers the Financial Time Machine app — a personal finance tool that allows users to input their financial data and get projections of their financial future using AI-like logic.
-
----
-
-## 🚀 Features
-
-- 🔐 User Registration and Login with JWT Authentication
-- 💼 Input Financial Data (income, expenses, savings, goal)
-- 📈 Project Financial Growth Over 5 Years
-- 🔒 Protected Routes for Authenticated Users Only
+This backend API handles user registration, login, and financial projection data input. It calculates financial projections based on user data like income, savings, and goals. JWT authentication is used to secure user-specific routes.
 
 ---
 
-## 📁 Folder Structure
+## ✨ Getting Started
 
-```
-project/
-│
-├── controllers/
-│   └── authController.js
-│   └── financeController.js
-│
-├── models/
-│   └── userModel.js
-│   └── financeModel.js
-│
-├── routes/
-│   └── authRoutes.js
-│   └── financeRoutes.js
-│
-├── middleware/
-│   └── authMiddleware.js
-│
-├── utils/
-│   └── projectionUtils.js
-│
-├── app.js
-├── .env
-└── package.json
-```
+### Prerequisites
+- Node.js
+- MongoDB
 
----
-
-## ⚙️ Setup Instructions
-
-1. **Clone the repo & install dependencies:**
-
+### Setup
 ```bash
+git clone <repo-url>
+cd <project-folder>
 npm install
 ```
 
-2. **Create a `.env` file:**
-
-```env
-PORT=8080
-MONGO_URL=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
+### Environment Variables
+Create a `.env` file in the root with the following:
+```
+MONGO_URI=<your-mongodb-uri>
+JWT_SECRET=<your-jwt-secret>
+PORT=5000
 ```
 
-3. **Run the server:**
-
+### Start Server
 ```bash
-node server.js
+npm start
 ```
 
 ---
 
-## 🔐 AUTH Routes
+## 🧑‍💼 User Routes
 
-### ✅ Register a User
-
-```
-POST /api/auth/register
-```
-
-#### Request Body:
-
+### 🔐 Register
+**POST** `/api/auth/register`
 ```json
 {
   "name": "Lalit Sharma",
-  "username": "lalitsharma",
+  "username": "lalit123",
   "email": "lalit@example.com",
-  "password": "123456"
+  "password": "password123"
 }
 ```
 
-#### Success Response:
+### 🔑 Login
+**POST** `/api/auth/login`
 ```json
 {
-  "message": "User registered successfully"
+  "email": "lalit@example.com",
+  "password": "password123"
 }
 ```
+Returns: JWT Token
 
 ---
 
-### 🔓 Login a User
-
-```
-POST /api/auth/login
-```
-
-#### Request Body:
-
-```json
-{
-  "email": "lalit@example.com",
-  "password": "123456"
-}
-```
-
-#### Success Response:
-```json
-{
-  "message": "Login successful",
-  "token": "<JWT Token>"
-}
-```
-
-Use this token in `Authorization` header as:
-
+## 💰 Finance Routes
+All finance routes are protected. Add the token in headers:
 ```
 Authorization: Bearer <token>
 ```
-
----
-
-## 💼 Finance Routes (Protected)
 
 ### ➕ Input Finance Data
-
-```
-POST /api/finance/input
-```
-
-#### Headers:
-```
-Authorization: Bearer <token>
-```
-
-#### Request Body:
-
+**POST** `/api/finance/input`
 ```json
 {
-  "income": 50000,
-  "expenses": 20000,
-  "savings": 10000,
-  "goal": "Buy a Laptop"
+  "age": 25,
+  "monthlyIncome": 50000,
+  "monthlyFixedExpenses": 20000,
+  "monthlySavings": 10000,
+  "currentSavings": 50000,
+  "incomeGrowthRate": 10,
+  "careerChange": "Yes",
+  "newExpectedIncome": 60000,
+  "changeYear": 2027,
+  "financialGoals": [
+    {
+      "goal": "Buy a Laptop",
+      "amount": 70000,
+      "targetYear": 2026
+    },
+    {
+      "goal": "Europe Trip",
+      "amount": 200000,
+      "targetYear": 2029
+    }
+  ]
 }
 ```
 
-#### Response:
+### 📈 Get Finance Projection
+**GET** `/api/finance/projection/:id`
+- `:id` is the Finance document's ID.
 
+Returns:
 ```json
 {
-  "_id": "finance_id",
-  "income": 50000,
-  "expenses": 20000,
-  "savings": 10000,
-  "goal": "Buy a Laptop",
-  "userId": "user_id",
-  "createdAt": "...",
-  "__v": 0
-}
-```
-
----
-
-### 📊 Get Financial Projection
-
-```
-GET /api/finance/projection/:id
-```
-
-- `:id` = ID of the finance document received from above response
-- Requires token in headers
-
-#### Response:
-
-```json
-{
-  "finance": {
-    "_id": "...",
-    "income": 50000,
-    "expenses": 20000,
-    "savings": 10000,
-    "goal": "Buy a Laptop",
-    "userId": "...",
-    "createdAt": "...",
-    "__v": 0
-  },
+  "finance": { ... },
   "projection": [
-    { "year": 1, "balance": 370000 },
-    { "year": 2, "balance": 730000 },
-    { "year": 3, "balance": 1090000 },
-    { "year": 4, "balance": 1450000 },
-    { "year": 5, "balance": 1810000 }
+    { "year": 1, "balance": 120000 },
+    { "year": 2, "balance": 250000 },
+    ...
   ]
 }
 ```
 
 ---
 
-## 📦 Tech Stack
-
-- Node.js
-- Express.js
-- MongoDB (Mongoose)
-- JWT for authentication
-- Bcrypt for password hashing
-
----
-
-## ✨ Contribution
-
-- Backend: [Lalit Sharma]
-- Frontend: [Zuba Alam]
+## 🧐 Logic Behind Projection
+- Calculates cumulative balance each year based on:
+  - Monthly income, expenses, savings
+  - Income growth rate
+  - Career changes (optional)
+  - Current savings
+- Considers future goals & timeline
 
 ---
 
-## 🧠 Project By
-Hackathon - Masai School 🚀  
-Theme: Financial Time Machine
+## 📦 Folder Structure
+```
+├── controllers/
+│   └── authController.js
+│   └── financeController.js
+├── middleware/
+│   └── authMiddleware.js
+├── models/
+│   └── userModel.js
+│   └── financeModel.js
+├── routes/
+│   └── authRoutes.js
+│   └── financeRoutes.js
+├── utils/
+│   └── projectionUtils.js
+├── server.js
+```
 
 ---
+
+## 🧑‍💻 Developed by
+**Lalit Sharma**
+- Full-stack Developer
+- MERN | Express | MongoDB | React
+
+For any questions or support, feel free to reach out!
+

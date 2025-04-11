@@ -3,13 +3,30 @@ const { calculateProjection } = require("../utils/projectionUtils");
 
 const createFinance = async (req, res) => {
   try {
-    const { income, expenses, savings, goal } = req.body;
+    const {
+      age,
+      monthlyIncome,
+      monthlyFixedExpenses,
+      monthlySavings,
+      currentSavings,
+      incomeGrowthRate,
+      careerChange,
+      newExpectedIncome,
+      changeYear,
+      financialGoals
+    } = req.body;
 
     const data = await Finance.create({
-      income,
-      expenses,
-      savings,
-      goal,
+      age,
+      monthlyIncome,
+      monthlyFixedExpenses,
+      monthlySavings,
+      currentSavings,
+      incomeGrowthRate,
+      careerChange,
+      newExpectedIncome,
+      changeYear,
+      financialGoals,
       userId: req.user.userId
     });
 
@@ -19,11 +36,14 @@ const createFinance = async (req, res) => {
   }
 };
 
-
 const getProjection = async (req, res) => {
   try {
-    const finance = await Finance.findOne({ _id: req.params.id, userId: req.user.userId });
-    if (!finance) return res.status(404).json({ message: "Finance data not found" });
+    const finance = await Finance.findOne({
+      _id: req.params.id,
+      userId: req.user.userId,
+    });
+    if (!finance)
+      return res.status(404).json({ message: "Finance data not found" });
 
     const projection = calculateProjection(finance);
     res.json({ finance, projection });
