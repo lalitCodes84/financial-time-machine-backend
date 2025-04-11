@@ -1,148 +1,92 @@
-# 📊 Financial Projection Backend
+# 💸 Financial Time Machine
 
-This backend API handles user registration, login, and financial projection data input. It calculates financial projections based on user data like income, savings, and goals. JWT authentication is used to secure user-specific routes.
+A full-stack app to track your income, expenses, and future savings projections. Built with **Node.js**, **Express**, and **MongoDB** for the backend.
+
+🔗 **Live API URL**: [https://financial-time-machine-backend.onrender.com](https://financial-time-machine-backend.onrender.com)
 
 ---
 
-## ✨ Getting Started
+## 📦 Features
 
-### Prerequisites
-- Node.js
-- MongoDB
+- ✅ User Registration and Login (with JWT)
+- 💰 Add Income and Expenses
+- 📊 Calculate and Get 5-Year Financial Projection
+- 🔐 Protected Routes with Authentication
 
-### Setup
-```bash
-git clone <repo-url>
-cd <project-folder>
-npm install
+---
+
+## ⚙️ Tech Stack
+
+- **Backend**: Node.js, Express.js, MongoDB, Mongoose
+- **Auth**: JWT (JSON Web Tokens)
+- **Deployment**: [Render.com](https://render.com/)
+
+---
+
+## 🚀 API Endpoints
+
+### 🔐 Auth Routes (`/api/auth`)
+
+| Method | Endpoint      | Description        |
+|--------|---------------|--------------------|
+| POST   | `/register`   | Register user      |
+| POST   | `/login`      | Login user & get token |
+
+### 💸 Finance Routes (`/api/finance`)
+
+| Method | Endpoint            | Description                |
+|--------|---------------------|----------------------------|
+| POST   | `/`                 | Add income & expenses      |
+| GET    | `/projection`       | Get 5-year savings projection |
+
+> ⚠️ Finance routes are protected by JWT token in headers.
+
+---
+
+## 🔧 Environment Variables
+
+You must create a `.env` file in the root:
+
 ```
-
-### Environment Variables
-Create a `.env` file in the root with the following:
-```
-MONGO_URI=<your-mongodb-uri>
-JWT_SECRET=<your-jwt-secret>
 PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
 ```
 
-### Start Server
+---
+
+## 🛠️ Run Locally
+
 ```bash
+git clone https://github.com/your-username/your-repo.git
+cd your-repo
+npm install
 npm start
 ```
 
 ---
 
-## 🧑‍💼 User Routes
+## 📮 Sample Request (Protected Route)
 
-### 🔐 Register
-**POST** `/api/auth/register`
-```json
-{
-  "name": "Lalit Sharma",
-  "username": "lalit123",
-  "email": "lalit@example.com",
-  "password": "password123"
-}
-```
-
-### 🔑 Login
-**POST** `/api/auth/login`
-```json
-{
-  "email": "lalit@example.com",
-  "password": "password123"
-}
-```
-Returns: JWT Token
-
----
-
-## 💰 Finance Routes
-All finance routes are protected. Add the token in headers:
-```
-Authorization: Bearer <token>
-```
-
-### ➕ Input Finance Data
-**POST** `/api/finance/input`
-```json
-{
-  "age": 25,
-  "monthlyIncome": 50000,
-  "monthlyFixedExpenses": 20000,
-  "monthlySavings": 10000,
-  "currentSavings": 50000,
-  "incomeGrowthRate": 10,
-  "careerChange": "Yes",
-  "newExpectedIncome": 60000,
-  "changeYear": 2027,
-  "financialGoals": [
-    {
-      "goal": "Buy a Laptop",
-      "amount": 70000,
-      "targetYear": 2026
-    },
-    {
-      "goal": "Europe Trip",
-      "amount": 200000,
-      "targetYear": 2029
-    }
-  ]
-}
-```
-
-### 📈 Get Finance Projection
-**GET** `/api/finance/projection/:id`
-- `:id` is the Finance document's ID.
-
-Returns:
-```json
-{
-  "finance": { ... },
-  "projection": [
-    { "year": 1, "balance": 120000 },
-    { "year": 2, "balance": 250000 },
-    ...
-  ]
-}
+```http
+GET /api/finance/projection
+Authorization: Bearer <your_token>
 ```
 
 ---
 
-## 🧐 Logic Behind Projection
-- Calculates cumulative balance each year based on:
-  - Monthly income, expenses, savings
-  - Income growth rate
-  - Career changes (optional)
-  - Current savings
-- Considers future goals & timeline
+## 🧠 How Projection Works?
+
+Simple 5-year savings projection based on:
+
+```js
+balance += (income - expenses) * 12;
+```
+
+Each year calculates your new balance based on annual savings.
 
 ---
 
-## 📦 Folder Structure
-```
-├── controllers/
-│   └── authController.js
-│   └── financeController.js
-├── middleware/
-│   └── authMiddleware.js
-├── models/
-│   └── userModel.js
-│   └── financeModel.js
-├── routes/
-│   └── authRoutes.js
-│   └── financeRoutes.js
-├── utils/
-│   └── projectionUtils.js
-├── server.js
-```
+## ✨ Author
 
----
-
-## 🧑‍💻 Developed by
-**Lalit Sharma**
-- Full-stack Developer
-- MERN | Express | MongoDB | React
-
-For any questions or support, feel free to reach out!
-
+Made with ❤️ by Lalit Sharma
