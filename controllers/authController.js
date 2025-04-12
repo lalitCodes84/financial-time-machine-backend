@@ -25,7 +25,9 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const email = req.body.email;
+    const password = req.body.password;
+
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
 
@@ -36,8 +38,14 @@ const login = async (req, res) => {
       expiresIn: "7d",
     });
 
-    // Exclude password from user data
-    const { password: _, ...userData } = user._doc;
+    // Construct userData manually without destructuring
+    const userData = {
+      _id: user._id,
+      name: user.name,
+      username: user.username,
+      email: user.email,
+      // Exclude password
+    };
 
     res.json({
       message: "Login successful",
@@ -48,5 +56,6 @@ const login = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 module.exports = { register, login };
